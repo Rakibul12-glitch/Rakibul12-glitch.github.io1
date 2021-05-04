@@ -1,0 +1,181 @@
+-- *************************************************************
+-- This script only creates the Course Enrolment Management database
+-- *************************************************************
+
+-- create the database
+DROP DATABASE IF EXISTS course_enrolment_management;
+CREATE DATABASE course_enrolment_management;
+
+-- select the database
+USE course_enrolment_management;
+
+-- create the tables
+CREATE TABLE register
+(
+	reg_id       INT            PRIMARY KEY AUTO_INCREMENT,
+    type         VARCHAR(50)    NOT NULL, 
+    name       VARCHAR(50)    NOT NULL,
+    email        VARCHAR(50)    NOT NULL UNIQUE,
+    password BINARY(64)       NOT NULL,
+    confirm_password BINARY(64)       NOT NULL
+);
+
+CREATE TABLE login
+(
+  login_id                    INT                    PRIMARY KEY   AUTO_INCREMENT,
+  reg_id                      INT    NOT NULL, 
+  email                       VARCHAR(50)    NOT NULL,
+  password                BINARY(64)        NOT NULL
+);
+
+CREATE TABLE profile
+(
+  profile_id                  INT                    PRIMARY KEY   AUTO_INCREMENT,
+  reg_id                      INT                    NOT NULL,   
+  name                      VARCHAR(50)    NOT NULL,
+  date_of_birth            DATE                 NOT NULL,
+  gender                     VARCHAR(50)    NOT NULL,
+  email                       VARCHAR(50)    NOT NULL
+);
+
+
+-- drop user if it already exists
+DROP USER IF EXISTS yasmin@localhost;
+
+-- create user
+CREATE USER yasmin@localhost 
+IDENTIFIED BY 'pagolmon';
+
+-- grant privileges to that user
+GRANT SELECT, INSERT, DELETE, UPDATE
+ON course_enrolment_management.*
+TO yasmin@localhost;
+
+
+CREATE TABLE class_room_info
+(
+	class_room_id       INT           		 PRIMARY KEY AUTO_INCREMENT,
+    time 			         VARCHAR(45) 	 NOT NULL
+);
+
+CREATE TABLE semester_info
+(
+	semester_id       INT           		 PRIMARY KEY AUTO_INCREMENT,
+    semester_name  VARCHAR(45) 	 NOT NULL,
+    Year                  VARCHAR(45) 	 NOT NULL
+);
+CREATE TABLE course_info
+(
+	course_id       		INT            		 PRIMARY KEY AUTO_INCREMENT,
+    course_name         VARCHAR(50)   NOT NULL, 
+    course_code       	VARCHAR(50)    NOT NULL,
+    course_credit         INT                   NOT NULL,
+    class_room_id 		INT			 		 NOT NULL,
+    semester_id 			INT 					 NOT NULL
+);
+CREATE TABLE instructor_course_info
+(
+	instructor_course_info_id			INT PRIMARY KEY AUTO_INCREMENT,
+    instructor_id 			                    INT 			    NOT NULL,
+    course_id 			                        INT 					NOT NULL
+);
+
+
+CREATE TABLE student_course_info
+(
+	student_course_info_id  INT PRIMARY KEY AUTO_INCREMENT,
+	student_id      			   INT            		  NOT NULL,
+    course_id 		 			   INT 					 NOT NULL,
+    instructor_id 	               INT 					 NOT NULL
+);
+
+
+INSERT INTO semester_info VALUES(default, 'Spring', '2020');
+INSERT INTO semester_info VALUES(default, 'Summer', '2020');
+INSERT INTO semester_info VALUES(default, 'Fall', '2020');
+
+
+
+
+
+INSERT INTO class_room_info VALUES(default, '10:30 AM');
+INSERT INTO class_room_info VALUES(default, '12:30 AM');
+INSERT INTO class_room_info VALUES(default, '02:30 AM');
+INSERT INTO class_room_info VALUES(default, '04:30 AM');
+INSERT INTO class_room_info VALUES(default, '05:30 AM');
+
+INSERT INTO course_info VALUES(default, 'Data Structure', 'CSCI2000', 3, 1,1);
+INSERT INTO course_info VALUES(default, 'Object Oriented Programming in C++', 'CSCI2001', 3, 2,1);
+INSERT INTO course_info VALUES(default, 'Software Engineering', 'CSCI2002', 3, 3,1);
+INSERT INTO course_info VALUES(default, 'Algorithm', 'CSCI2003', 3, 4,1);
+INSERT INTO course_info VALUES(default, 'Computer Architecture', 'CSCI2004', 3, 5,1);
+INSERT INTO course_info VALUES(default, 'Data Structure', 'CSCI2000', 3, 1,2);
+INSERT INTO course_info VALUES(default, 'Object Oriented Programming in C++', 'CSCI2001', 3, 2,2);
+INSERT INTO course_info VALUES(default, 'Software Engineering', 'CSCI2002', 3, 3,2);
+INSERT INTO course_info VALUES(default, 'Algorithm', 'CSCI2003', 3, 4,2);
+INSERT INTO course_info VALUES(default, 'Computer Architecture', 'CSCI2004', 3, 5,2);
+INSERT INTO course_info VALUES(default, 'Data Structure', 'CSCI2000', 3, 1,3);
+INSERT INTO course_info VALUES(default, 'Object Oriented Programming in C++', 'CSCI2001', 3, 2,3);
+INSERT INTO course_info VALUES(default, 'Software Engineering', 'CSCI2002', 3, 3,3);
+INSERT INTO course_info VALUES(default, 'Algorithm', 'CSCI2003', 3, 4,3);
+INSERT INTO course_info VALUES(default, 'Computer Architecture', 'CSCI2004', 3, 5,3);
+
+
+INSERT INTO register VALUES(DEFAULT, 'teacher' , 'Devid Cameroon', 'david@aum.edu', 'dc@36117','dc@36117','2020-12-29', 'male' );
+INSERT INTO register VALUES(DEFAULT, 'teacher' , 'John Doe', 'jdoe@aum.edu', 'jd@36117','dc@36117','2020-12-29', 'male' );
+INSERT INTO register VALUES(DEFAULT, 'teacher' , 'Susan Fletcher', 'sfletcher@aum.edu', 'sf@36117','sf@36117','2020-12-29', 'female' );
+
+INSERT INTO register VALUES(DEFAULT, 'student' , 'John Sina', 'jsina@aum.edu', 'jc@36117','jc@36117','2020-12-29', 'male' );
+INSERT INTO register VALUES(DEFAULT, 'student' , 'Ron Michael', 'ron@aum.edu', 'ron@36117','ron@36117','2020-12-29', 'male' );
+INSERT INTO register VALUES(DEFAULT, 'student' , 'Debbie Roy', 'roy@aum.edu', 'roy@36117','roy@36117','2020-12-29', 'female' );
+
+
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 1);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 2);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 3);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 4);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 5);
+
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 1);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 2);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 3);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 4);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 5);
+
+INSERT INTO instructor_course_info VALUES(DEFAULT, 4, 1);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 4, 2);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 4, 3);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 4);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 5);
+
+
+INSERT INTO student_course_info VALUES
+(DEFAULT, 1,1,2),
+(DEFAULT, 1,2,2),
+(DEFAULT, 1,3,2),
+(DEFAULT, 1,4,2),
+(DEFAULT, 1,5,2),
+(DEFAULT, 5,1,3),
+(DEFAULT, 5,2,3),
+(DEFAULT, 5,3,3),
+(DEFAULT, 5,4,3),
+(DEFAULT, 5,5,3),
+(DEFAULT, 6,1,4),
+(DEFAULT, 6,2,4),
+(DEFAULT, 6,3,4),
+(DEFAULT, 6,4,4),
+(DEFAULT, 6,5,4),
+(DEFAULT, 7,1,2),
+(DEFAULT, 7,2,2),
+(DEFAULT, 7,3,2),
+(DEFAULT, 7,4,2),
+(DEFAULT, 7,5,2);
+
+
+CREATE TABLE letter_grade
+(
+  letter_grade_id         INT   PRIMARY KEY   AUTO_INCREMENT,
+  reg_id                      INT   NOT NULL, 
+  course_id                 INT   NOT NULL,
+  grade                       VARCHAR(10)
+);

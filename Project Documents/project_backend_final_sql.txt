@@ -1,0 +1,173 @@
+-- *************************************************************
+-- This script only creates the Course Enrolment Management database
+-- *************************************************************
+-- create the database
+DROP DATABASE IF EXISTS course_enrollment_management;
+CREATE DATABASE course_enrollment_management;
+-- select the database
+USE course_enrollment_management;
+
+
+-- drop user if it already exists
+DROP USER IF EXISTS yasmin@localhost;
+-- create user
+CREATE USER yasmin@localhost 
+IDENTIFIED BY 'pagolmon';
+
+-- grant privileges to that user
+GRANT SELECT, INSERT, DELETE, UPDATE
+ON course_enrollment_management.*
+TO yasmin@localhost;
+
+
+CREATE TABLE `register` (
+  `reg_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `confirm_password` varchar(255) NOT NULL,
+  `dob` date DEFAULT NULL,
+  `gender` varchar(10) NOT NULL,
+  PRIMARY KEY (`reg_id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `login` (
+  `login_id` int(11) NOT NULL AUTO_INCREMENT,
+  `reg_id` int(11) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` binary(64) NOT NULL,
+  `login_date` date DEFAULT NULL,
+  PRIMARY KEY (`login_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=351 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `course_info` (
+  `course_id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_name` varchar(50) NOT NULL,
+  `course_code` varchar(50) NOT NULL,
+  `course_credit` int(11) NOT NULL,
+  `class_room_id` int(11) NOT NULL,
+  `semester_id` int(11) NOT NULL,
+  PRIMARY KEY (`course_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `instructor_course_info` (
+  `instructor_course_info_id` int(11) NOT NULL AUTO_INCREMENT,
+  `instructor_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  PRIMARY KEY (`instructor_course_info_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
+
+
+
+CREATE TABLE `student_course_info` (
+  `student_course_info_id` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL,
+  `if_enrolled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`student_course_info_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `semester_info` (
+  `semester_id` int(11) NOT NULL AUTO_INCREMENT,
+  `semester_name` varchar(45) NOT NULL,
+  `Year` varchar(45) NOT NULL,
+  PRIMARY KEY (`semester_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `class_room_info` (
+  `class_room_id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` varchar(45) NOT NULL,
+  PRIMARY KEY (`class_room_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `letter_grade` (
+  `letter_grade_id` int(11) NOT NULL AUTO_INCREMENT,
+  `reg_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `grade` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`letter_grade_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `profile` (
+  `profile_id` int(11) NOT NULL AUTO_INCREMENT,
+  `reg_id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `date_of_birth` date NOT NULL,
+  `gender` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  PRIMARY KEY (`profile_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO register VALUES(DEFAULT, 'teacher' , 'Devid Cameroon', 'david@aum.edu', 'dc@36117','dc@36117','2020-12-29', 'male' );
+INSERT INTO register VALUES(DEFAULT, 'teacher' , 'John Doe', 'jdoe@aum.edu', 'jd@36117','dc@36117','2020-12-29', 'male' );
+INSERT INTO register VALUES(DEFAULT, 'teacher' , 'Susan Fletcher', 'sfletcher@aum.edu', 'sf@36117','sf@36117','2020-12-29', 'female' );
+INSERT INTO register VALUES(DEFAULT, 'student' , 'John Sina', 'jsina@aum.edu', 'jc@36117','jc@36117','2020-12-29', 'male' );
+INSERT INTO register VALUES(DEFAULT, 'student' , 'Ron Michael', 'ron@aum.edu', 'ron@36117','ron@36117','2020-12-29', 'male' );
+INSERT INTO register VALUES(DEFAULT, 'student' , 'Debbie Roy', 'roy@aum.edu', 'roy@36117','roy@36117','2020-12-29', 'female' );
+
+
+INSERT INTO course_info VALUES(default, 'Data Structure', 'CSCI2000', 3, 1,1);
+INSERT INTO course_info VALUES(default, 'Object Oriented Programming in C++', 'CSCI2001', 3, 2,1);
+INSERT INTO course_info VALUES(default, 'Software Engineering', 'CSCI2002', 3, 3,1);
+INSERT INTO course_info VALUES(default, 'Algorithm', 'CSCI2003', 3, 4,1);
+INSERT INTO course_info VALUES(default, 'Computer Architecture', 'CSCI2004', 3, 5,1);
+INSERT INTO course_info VALUES(default, 'Data Structure', 'CSCI2000', 3, 1,2);
+INSERT INTO course_info VALUES(default, 'Object Oriented Programming in C++', 'CSCI2001', 3, 2,2);
+INSERT INTO course_info VALUES(default, 'Software Engineering', 'CSCI2002', 3, 3,2);
+INSERT INTO course_info VALUES(default, 'Algorithm', 'CSCI2003', 3, 4,2);
+INSERT INTO course_info VALUES(default, 'Computer Architecture', 'CSCI2004', 3, 5,2);
+INSERT INTO course_info VALUES(default, 'Data Structure', 'CSCI2000', 3, 1,3);
+INSERT INTO course_info VALUES(default, 'Object Oriented Programming in C++', 'CSCI2001', 3, 2,3);
+INSERT INTO course_info VALUES(default, 'Software Engineering', 'CSCI2002', 3, 3,3);
+INSERT INTO course_info VALUES(default, 'Algorithm', 'CSCI2003', 3, 4,3);
+INSERT INTO course_info VALUES(default, 'Computer Architecture', 'CSCI2004', 3, 5,3);
+
+INSERT INTO class_room_info VALUES(default, '10:30 AM');
+INSERT INTO class_room_info VALUES(default, '12:30 AM');
+INSERT INTO class_room_info VALUES(default, '02:30 AM');
+INSERT INTO class_room_info VALUES(default, '04:30 AM');
+INSERT INTO class_room_info VALUES(default, '05:30 AM');
+
+INSERT INTO semester_info VALUES(default, 'Spring', '2020');
+INSERT INTO semester_info VALUES(default, 'Summer', '2020');
+INSERT INTO semester_info VALUES(default, 'Fall', '2020');
+
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 1);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 2);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 3);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 4);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 2, 5);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 1);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 2);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 3);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 4);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 5);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 4, 1);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 4, 2);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 4, 3);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 4);
+INSERT INTO instructor_course_info VALUES(DEFAULT, 3, 5);
+
+INSERT INTO student_course_info VALUES
+(DEFAULT, 1,1,2, 0),
+(DEFAULT, 1,2,2, 0),
+(DEFAULT, 1,3,2, 0),
+(DEFAULT, 1,4,2, 0),
+(DEFAULT, 1,5,2, 0),
+(DEFAULT, 5,1,3, 0),
+(DEFAULT, 5,2,3, 0),
+(DEFAULT, 5,3,3, 0),
+(DEFAULT, 5,4,3, 0),
+(DEFAULT, 5,5,3, 0),
+(DEFAULT, 6,1,4, 0),
+(DEFAULT, 6,2,4, 0),
+(DEFAULT, 6,3,4, 0),
+(DEFAULT, 6,4,4, 0),
+(DEFAULT, 6,5,4, 0),
+(DEFAULT, 7,1,2, 0),
+(DEFAULT, 7,2,2, 0),
+(DEFAULT, 7,3,2, 0),
+(DEFAULT, 7,4,2, 0),
+(DEFAULT, 7,5,2, 0);

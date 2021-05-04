@@ -1,0 +1,19 @@
+3.19.242.33
+user: root
+pass: pagolmon
+http://ec2-3-19-242-33.us-east-2.compute.amazonaws.com/phpMyAdmin/index.php
+sudo systemctl start mariadb
+
+
+
+sudo systemctl restart httpd
+sudo systemctl restart php-fpm
+
+
+open file: vi filename.txt
+Edit: presss INSERT+
+Save: Esc+:w
+Save and Ext: Esc+:x
+
+
+wget https://peoject-backend-final.s3.us-east-2.amazonaws.com/peoject-backend-final.zip
